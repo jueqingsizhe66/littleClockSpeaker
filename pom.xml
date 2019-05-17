@@ -9,12 +9,17 @@
     <version>1.0-SNAPSHOT</version>
 
     <dependencies>
-    <!-- https://mvnrepository.com/artifact/com.jacob/jacob -->
+        <!-- https://mvnrepository.com/artifact/com.jacob/jacob -->
 
-    <dependency>
-        <groupId>com.jacob</groupId>
-        <artifactId>jacob</artifactId>
-        <version>1.19</version>
-    </dependency>
+        <dependency>
+            <groupId>com.jacob</groupId>
+            <artifactId>jacob</artifactId>
+            <version>1.19</version>
+        </dependency>
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-all</artifactId>
+            <version>4.5.9</version>
+        </dependency>
     </dependencies>
 </project>

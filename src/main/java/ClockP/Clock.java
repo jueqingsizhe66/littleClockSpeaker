@@ -30,7 +30,9 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 
+import cn.hutool.core.date.DateUtil;
 import com.jacob.activeX.ActiveXComponent;
+import com.jacob.com.DateUtilities;
 import com.jacob.com.Dispatch;
 import com.jacob.com.Variant;
 
@@ -339,23 +341,41 @@ public class Clock {
     public static Date getLatestScheduleTime(Date date) {
         System.out.println("传入的定时开始时间date为："+date);
         //判断读取的定时任务开始时间是否低于当前时间，如果低于当前时间，需要重置定时任务的开始日期
+
         Date date1 = new Date();
         if(date.before(date1)) {
             //将日期的时分秒转化为秒进行比较
             //@SuppressWarnings("deprecation")
-            int millsBefor = (date.getHours())*60*60+(date.getMinutes())*60+(date.getSeconds());
-            int millsNow = (date1.getHours())*60*60+(date1.getMinutes())*60+(date1.getSeconds());
+            //int millsBefor = (date.getHours())*60*60+(date.getMinutes())*60+(date.getSeconds());
+            int millsBefor = (DateUtil.hour(date,true))*60*60+(DateUtil.minute(date))*60+(DateUtil.second(date));
+
+            //int millsNow = (date1.getHours())*60*60+(date1.getMinutes())*60+(date1.getSeconds());
+            int millsNow = (DateUtil.hour(date1,true))*60*60+(DateUtil.minute(date1))*60+(DateUtil.second(date1));
             System.out.println("millsBefore:----"+millsBefor+"millsNow:----"+millsNow);
             if(millsBefor<millsNow) {
-                System.out.println("date1.day:"+date1.getDay());
-                date1.setHours(date.getHours()+24);
-                date1.setMinutes(date.getMinutes());
-                date1.setSeconds(date.getSeconds());
+                //System.out.println("date1.day:"+date1.getDay());
+                System.out.println("date1.day:"+DateUtil.dayOfMonth(date1));
+
+                Calendar calendar = Calendar.getInstance();
+                calendar.set(Calendar.HOUR_OF_DAY,DateUtil.hour(date,true)+24);
+                calendar.set(Calendar.MINUTE, DateUtil.minute(date));
+                calendar.set(Calendar.SECOND, DateUtil.second(date));
+                date1=calendar.getTime();
+
+//                date1.setHours(DateUtil.hour(date,true)+24);
+//                date1.setMinutes(DateUtil.minute(date));
+//                date1.setSeconds(DateUtil.second(date));
                 System.out.println("新date2-----------"+date1);
             }else {
-                date1.setHours(date.getHours());
-                date1.setMinutes(date.getMinutes());
-                date1.setSeconds(date.getSeconds());
+
+                Calendar calendar = Calendar.getInstance();
+                calendar.set(Calendar.HOUR_OF_DAY,DateUtil.hour(date,true));
+                calendar.set(Calendar.MINUTE, DateUtil.minute(date));
+                calendar.set(Calendar.SECOND, DateUtil.second(date));
+                date1=calendar.getTime();
+//                date1.setHours(DateUtil.hour(date,true));
+//                date1.setMinutes(DateUtil.minute(date));
+//                date1.setSeconds(DateUtil.second(date));
                 System.out.println("新date3-----------"+date1);
             }
             System.out.println("获取的最新定时任务时间===="+date1);
